@@ -1,0 +1,204 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+main {
+    display: flex;
+    gap: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.left-column {
+    flex: 1;
+    max-width: 350px;
+}
+
+.right-column {
+    flex: 2;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+input, select, button {
+    margin: 3px 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#player-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#player-list div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    cursor: move;
+    transition: background-color 0.3s;
+}
+
+#player-list div:hover {
+    background-color: #e9e9e9;
+}
+
+#player-list div.dragging {
+    opacity: 0.5;
+    background-color: #d0d0d0;
+}
+
+#player-list div.drag-over {
+    border: 2px dashed #007bff;
+}
+
+#player-list div input,
+#player-list div select {
+    display: none;
+}
+
+#player-list div button {
+    display: none;
+}
+
+#player-list div.editing {
+    background-color: #e0e0e0;
+}
+
+#player-list div.editing input,
+#player-list div.editing select {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+#player-list div.editing button {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+#squad-preview {
+    border: none;
+}
+
+.preview-container {
+    width: 100%;
+    height: 700px; /* Increased from 600px to 700px to accommodate more players */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#preview-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Add this line to maintain aspect ratio */
+}
+
+.edit-player, .delete-player {
+    margin-left: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-player:hover, .delete-player:hover {
+    background-color: #0056b3;
+}
+
+#player-list select {
+    margin-left: 5px;
+}
+
+#formation-select {
+    margin-top: 20px;
+}
+
+.preview-player-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.preview-player-item span:first-child {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.preview-player-item span:last-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.preview-player-item:last-child {
+    border-bottom: none;
+}
+
+#add-player {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#add-player:hover {
+    background-color: #218838;
+}
+
+#formation {
+    width: 100%;
+    padding: 10px;
+}
+
+#download-image {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#download-image:hover {
+    background-color: #0056b3;
+}
+
+.substitute-header {
+    color: #333;
+    padding: 10px 0 5px 0;
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.player-list-divider {
+    border: none;
+    border-top: 2px solid #666666;
+    margin: 15px 0;
+}

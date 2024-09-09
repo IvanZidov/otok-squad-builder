@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squad Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Squad Builder</h1>
+    </header>
+    <main>
+        <div class="left-column">
+            <section id="formation-select">
+                <h2>Formation</h2>
+                <select id="formation">
+                    <option value="4-2-3-1" selected>4-2-3-1</option>
+                    <option value="4-4-2">4-4-2</option>
+                    <option value="4-3-3">4-3-3</option>
+                    <option value="3-5-2">3-5-2</option>
+                </select>
+            </section>
+            <section id="player-input">
+                <h2>Players</h2>
+                <div id="player-list" ondragover="event.preventDefault()"></div>
+            </section>
+        </div>
+        <div class="right-column">
+            <section id="squad-preview">
+                <h2>Squad Preview</h2>
+                <div class="preview-container">
+                    <canvas id="preview-canvas"></canvas>
+                </div>
+                <button id="download-image">Download Image</button> <!-- Add this line -->
+            </section>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
