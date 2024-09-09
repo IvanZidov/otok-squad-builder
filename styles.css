@@ -128,6 +128,11 @@ input, select, button {
         aspect-ratio: 4 / 3; // Maintain a 4:3 aspect ratio
         min-height: 300px; // Set a minimum height
     }
+
+    #player-list {
+        max-height: 300px; // Limit the height on mobile
+        overflow-y: auto; // Add scrollbar for player list
+    }
 }
 
 @media (min-width: 768px) {
