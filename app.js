@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.addEventListener('drop', drop);
             item.addEventListener('touchstart', touchStart);
             item.addEventListener('touchend', touchEnd);
+            item.addEventListener('touchmove', touchMove);
         });
     }
 
@@ -69,6 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const toIndex = parseInt(this.dataset.index);
             swapPlayers(fromIndex, toIndex);
         }
+    }
+
+    function touchMove(e) {
+        e.preventDefault(); // Prevent scrolling while dragging
     }
 
     function swapPlayers(fromIndex, toIndex) {
@@ -444,7 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadImageButton.addEventListener('click', () => {
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        const size = 1000; // Fixed size for the downloaded image
+        const minSize = 700; // Minimum size for the downloaded image
+        const size = Math.max(minSize, 1000); // Use 1000 if it's larger than minSize
 
         tempCanvas.width = size;
         tempCanvas.height = size;

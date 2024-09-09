@@ -38,8 +38,8 @@ input, select, button {
 }
 
 #player-list {
-    max-height: 500px;
-    overflow-y: auto;
+    max-height: none; // Remove the max-height
+    overflow-y: visible; // Change from auto to visible
 }
 
 #player-list div {
@@ -114,6 +114,22 @@ input, select, button {
     object-fit: contain;
 }
 
+@media (max-width: 767px) {
+    main {
+        flex-direction: column;
+    }
+
+    .left-column, .right-column {
+        width: 100%;
+    }
+
+    .preview-container {
+        height: auto;
+        aspect-ratio: 4 / 3; // Maintain a 4:3 aspect ratio
+        min-height: 300px; // Set a minimum height
+    }
+}
+
 @media (min-width: 768px) {
     main {
         flex-direction: row;
@@ -122,6 +138,8 @@ input, select, button {
     .left-column {
         flex: 1;
         max-width: 350px;
+        overflow-y: auto; // Add scrollbar to the entire left column if needed
+        max-height: 700px; // Match the height of the preview container
     }
 
     .right-column {
@@ -129,7 +147,7 @@ input, select, button {
     }
 
     .preview-container {
-        height: 600px;
+        height: 700px; // Keep this consistent with the max-height of left-column
         padding-bottom: 0;
     }
 }
