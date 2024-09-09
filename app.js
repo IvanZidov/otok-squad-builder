@@ -32,7 +32,25 @@ document.addEventListener('DOMContentLoaded', () => {
             item.addEventListener('dragstart', dragStart);
             item.addEventListener('dragover', dragOver);
             item.addEventListener('drop', drop);
+            item.addEventListener('touchstart', touchStart);
+            item.addEventListener('touchend', touchEnd);
         });
+    }
+
+    let touchStartIndex = null;
+
+    function touchStart(e) {
+        touchStartIndex = parseInt(this.dataset.index);
+        this.classList.add('tapped');
+    }
+
+    function touchEnd(e) {
+        const touchEndIndex = parseInt(this.dataset.index);
+        if (touchStartIndex !== null && touchStartIndex !== touchEndIndex) {
+            swapPlayers(touchStartIndex, touchEndIndex);
+        }
+        touchStartIndex = null;
+        document.querySelectorAll('#player-list div').forEach(item => item.classList.remove('tapped'));
     }
 
     function dragStart(e) {
@@ -49,14 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (draggedPlayer !== this) {
             const fromIndex = parseInt(draggedPlayer.dataset.index);
             const toIndex = parseInt(this.dataset.index);
-            
-            // Swap players in the array
-            [players[fromIndex], players[toIndex]] = [players[toIndex], players[fromIndex]];
-            
-            // Update the DOM
-            updatePlayerList();
-            generateSquadPreview();
+            swapPlayers(fromIndex, toIndex);
         }
+    }
+
+    function swapPlayers(fromIndex, toIndex) {
+        // Swap players in the array
+        [players[fromIndex], players[toIndex]] = [players[toIndex], players[fromIndex]];
+        
+        // Update the DOM
+        updatePlayerList();
+        generateSquadPreview();
     }
 
     function updatePlayerList() {
@@ -105,8 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const containerWidth = previewContainer.clientWidth;
         const containerHeight = previewContainer.clientHeight;
 
-        const listWidth = Math.min(containerWidth * 0.2, 200);
-        const fieldAspectRatio = 4 / 3; // Fixed 4:3 aspect ratio
+        const listWidth = containerWidth * 0.2;
+        const fieldAspectRatio = fieldImage.width / fieldImage.height;
         
         // Calculate field dimensions to fit the container
         let fieldWidth = containerWidth - listWidth - (2 * MARGIN);
@@ -120,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set canvas dimensions
         previewCanvas.width = listWidth + fieldWidth + (2 * MARGIN);
-        previewCanvas.height = fieldHeight + (2 * MARGIN);
+        previewCanvas.height = Math.max(fieldHeight + (2 * MARGIN), containerHeight);
 
         // Clear the canvas
         ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
@@ -227,6 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     x = startX + actualFieldWidth / 2;
                     y = startY + actualFieldHeight * 0.90;
                 }
+                player.x = x;
+                player.y = y;
                 drawPlayer(x, y, player, startX, actualFieldWidth);
                 resolve();
             });
@@ -347,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const actualPlayers = [
             { shortName: 'P.Židov', fullName: 'Petar Židov', number: '1' },
             { shortName: 'Petković', fullName: 'Dominik Petković', number: '11' },
-            { shortName: 'Kočiš', fullName: 'Dejan Kočiš', number: '5' },
+            { shortName: 'Kočiš', fullName: '(C) Dejan Kočiš', number: '5' },
             { shortName: 'Šimunković', fullName: 'Ivan Šimunković', number: '4' },
             { shortName: 'Mihoci', fullName: 'David Mihoci', number: '8' },
             { shortName: 'I.Židov', fullName: 'Ivan Židov', number: '6' },
@@ -421,15 +444,25 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadImageButton.addEventListener('click', () => {
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        const aspectRatio = 4 / 3;
-        const width = 1200; // Fixed width for the downloaded image
-        const height = width / aspectRatio;
+        const size = 1000; // Fixed size for the downloaded image
 
-        tempCanvas.width = width;
-        tempCanvas.height = height;
+        tempCanvas.width = size;
+        tempCanvas.height = size;
+
+        // Fill the background with white
+        tempCtx.fillStyle = 'white';
+        tempCtx.fillRect(0, 0, size, size);
+
+        // Calculate scaling and positioning to fit the content
+        const scale = Math.min(size / previewCanvas.width, size / previewCanvas.height);
+        const scaledWidth = previewCanvas.width * scale;
+        const scaledHeight = previewCanvas.height * scale;
+        const offsetX = (size - scaledWidth) / 2;
+        const offsetY = (size - scaledHeight) / 2;
 
         // Draw the existing canvas content onto the temp canvas
-        tempCtx.drawImage(previewCanvas, 0, 0, previewCanvas.width, previewCanvas.height, 0, 0, width, height);
+        tempCtx.drawImage(previewCanvas, 0, 0, previewCanvas.width, previewCanvas.height, 
+                          offsetX, offsetY, scaledWidth, scaledHeight);
 
         const link = document.createElement('a');
         link.download = 'squad_preview.png';
