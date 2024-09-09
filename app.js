@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const containerWidth = previewContainer.clientWidth;
         const containerHeight = previewContainer.clientHeight;
 
-        const listWidth = containerWidth * 0.2;
-        const fieldAspectRatio = fieldImage.width / fieldImage.height;
+        const listWidth = Math.min(containerWidth * 0.2, 200);
+        const fieldAspectRatio = 4 / 3; // Fixed 4:3 aspect ratio
         
         // Calculate field dimensions to fit the container
         let fieldWidth = containerWidth - listWidth - (2 * MARGIN);
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set canvas dimensions
         previewCanvas.width = listWidth + fieldWidth + (2 * MARGIN);
-        previewCanvas.height = Math.max(fieldHeight + (2 * MARGIN), containerHeight);
+        previewCanvas.height = fieldHeight + (2 * MARGIN);
 
         // Clear the canvas
         ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
@@ -419,9 +419,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 
     downloadImageButton.addEventListener('click', () => {
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        const aspectRatio = 4 / 3;
+        const width = 1200; // Fixed width for the downloaded image
+        const height = width / aspectRatio;
+
+        tempCanvas.width = width;
+        tempCanvas.height = height;
+
+        // Draw the existing canvas content onto the temp canvas
+        tempCtx.drawImage(previewCanvas, 0, 0, previewCanvas.width, previewCanvas.height, 0, 0, width, height);
+
         const link = document.createElement('a');
         link.download = 'squad_preview.png';
-        link.href = previewCanvas.toDataURL('image/png');
+        link.href = tempCanvas.toDataURL('image/png');
         link.click();
     });
 });

@@ -1,9 +1,10 @@
 body {
     font-family: Arial, sans-serif;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     background-color: #f0f0f0;
+    box-sizing: border-box;
 }
 
 h1, h2 {
@@ -13,6 +14,7 @@ h1, h2 {
 
 main {
     display: flex;
+    flex-direction: column;
     gap: 30px;
     background-color: #fff;
     padding: 20px;
@@ -20,13 +22,9 @@ main {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.left-column {
-    flex: 1;
-    max-width: 350px;
-}
-
-.right-column {
-    flex: 2;
+.left-column, .right-column {
+    width: 100%;
+    max-width: none;
 }
 
 section {
@@ -100,16 +98,41 @@ input, select, button {
 
 .preview-container {
     width: 100%;
-    height: 700px; /* Increased from 600px to 700px to accommodate more players */
+    height: 0;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+    position: relative;
     border: 1px solid #ccc;
     border-radius: 5px;
     overflow: hidden;
 }
 
 #preview-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Add this line to maintain aspect ratio */
+    object-fit: contain;
+}
+
+@media (min-width: 768px) {
+    main {
+        flex-direction: row;
+    }
+
+    .left-column {
+        flex: 1;
+        max-width: 350px;
+    }
+
+    .right-column {
+        flex: 2;
+    }
+
+    .preview-container {
+        height: 600px;
+        padding-bottom: 0;
+    }
 }
 
 .edit-player, .delete-player {
